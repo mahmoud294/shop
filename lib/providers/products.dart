@@ -64,6 +64,17 @@ class Products with ChangeNotifier {
   //   _showFavoritesOnly = false;
   //   notifyListeners();
   // }
+  Future<void> fetchAndSetProducts() async {
+    const url =
+        "https://first-flutter-50c28-default-rtdb.firebaseio.com/products.json";
+    try {
+      final response = await http.get(url);
+      print(json.decode(response.body));
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
 
   Future<void> addProduct(Product product) async {
     const url =
@@ -77,22 +88,21 @@ class Products with ChangeNotifier {
             'price': product.price,
             'isFavourite': product.isFavorite
           }));
-          final newProduct = Product(
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      imageUrl: product.imageUrl,
-      id: json.decode(response.body)['name'],
-    );
-    print(json.decode(response.body)['name']);
-    _items.add(newProduct);
-    // _items.insert(0, newProduct); // at the start of the list
-    notifyListeners();
+      final newProduct = Product(
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        id: json.decode(response.body)['name'],
+      );
+      print(json.decode(response.body)['name']);
+      _items.add(newProduct);
+      // _items.insert(0, newProduct); // at the start of the list
+      notifyListeners();
     } catch (error) {
       print(error);
       throw error;
     }
-    
   }
 
   void updateProduct(String id, Product newProduct) {
