@@ -81,10 +81,10 @@ class Products with ChangeNotifier {
         loadedProducts.add(Product(
           id: prodId,
           title: prodData['title'],
-          description: prodData['description'],
+          description:  prodData['descrebtion'],
           price: prodData['price'],
-          isFavorite: prodData['isFavorite'],
-          imageUrl: prodData['imageUrl'],
+          isFavorite: prodData['isFavourite'],
+          imageUrl: prodData['imagUrl'],
         ));
       });
       _items = loadedProducts;
@@ -101,10 +101,10 @@ class Products with ChangeNotifier {
         url,
         body: json.encode({
           'title': product.title,
-          'description': product.description,
-          'imageUrl': product.imageUrl,
+          'descrebtion': product.description,
+          'imagUrl': product.imageUrl,
           'price': product.price,
-          'isFavorite': product.isFavorite,
+          'isFavourite': product.isFavorite,
         }),
       );
       final newProduct = Product(
@@ -130,8 +130,8 @@ class Products with ChangeNotifier {
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
-            'description': newProduct.description,
-            'imageUrl': newProduct.imageUrl,
+            'descrebtion': newProduct.description,
+            'imagUrl': newProduct.imageUrl,
             'price': newProduct.price
           }));
       _items[prodIndex] = newProduct;
