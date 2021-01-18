@@ -31,7 +31,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     'imageUrl': '',
   };
   var _isInit = true;
-  var _isloading = false;
+  var _isLoading = false;
 
   @override
   void initState() {
@@ -90,42 +90,44 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
     _form.currentState.save();
     setState(() {
-      _isloading = true;
+      _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false)
+      await Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
-      setState(() {
-        _isloading = false;
-      });
     } else {
       try {
         await Provider.of<Products>(context, listen: false)
             .addProduct(_editedProduct);
       } catch (error) {
-        showDialog(
+        await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text('An Error Accured'),
-            content: Text('Some thing went wrong'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('ok'),
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-              )
-            ],
-          ),
+                title: Text('An error occurred!'),
+                content: Text('Something went wrong.'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Okay'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                  )
+                ],
+              ),
         );
-      } finally {
-        setState(() {
-          _isloading = false;
-        });
       }
-
-      Navigator.of(context).pop();
+      // finally {
+      //   setState(() {
+      //     _isLoading = false;
+      //   });
+      //   Navigator.of(context).pop();
+      // }
     }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
 
   @override
@@ -140,7 +142,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           ),
         ],
       ),
-      body: _isloading
+      body: _isLoading
           ? Center(
               child: CircularProgressIndicator(),
             )
